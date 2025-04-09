@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, FlatList} from "react-native";
-import Styles from "./styles"
+import Styles from "./styles";
 
 export default function Spaceships(){
         const [spaceships, setSpaceships] = useState([]) // for receiving the spaceships fetched from the API

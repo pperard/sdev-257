@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {View, Text, FlatList} from "react-native";
-import Styles from "./styles"
+import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
 

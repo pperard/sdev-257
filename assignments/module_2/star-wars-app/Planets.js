@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {View, Text, FlatList} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
+import Swipeable from "./Swipeable";
 
 Input.propTypes = {
     label: PropTypes.string,
@@ -44,6 +45,13 @@ export default function Planets(){
         )
     }
 
+    // implementing the swipeable feature
+    function onSwipe(planetName) {
+        return () => {
+            setMessage(planetName)
+        }
+    }
+
     return (
         <View style={Styles.container}>
             <Notif message={message} />
@@ -53,12 +61,12 @@ export default function Planets(){
                 setMessage(e.nativeEvent.text);
             }}
             />
-            <FlatList
-            data={planets}
-            keyExtractor={(item) => item.uid}
-            renderItem={({item}) => (
-                <Text style={Styles.item}>{item.name}</Text>
-            )} />
+            
+            <ScrollView style={Styles.scroll}>
+                {planets.map((v, i) => (
+                    <Swipeable key={planets[i].uid} onSwipe={onSwipe(planets[i].name)} name={planets[i].name} />
+                ))}
+            </ScrollView>
         </View>
     )
 }

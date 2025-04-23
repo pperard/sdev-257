@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {View, Text, FlatList} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
+import Swipeable from "./Swipeable";
 
 Input.propTypes = {
     label: PropTypes.string,
@@ -15,7 +16,7 @@ export default function Films(){
     const [message, setMessage] = useState(null)// for knowing what message to display in the modal
 
 
-    // fetch the planet from the API when the app load
+    // fetch the film from the API when the app load
     useEffect(() => {
         const fetchFilms = async () => {
             try{
@@ -44,6 +45,14 @@ export default function Films(){
         )
     }
 
+    // implementing the swipeable feature
+    function onSwipe(filmName) {
+        return () => {
+            setMessage(filmName)
+        }
+    }
+
+
     return (
         <View style={Styles.container}>
             <Notif message={message} />
@@ -53,12 +62,13 @@ export default function Films(){
                 setMessage(e.nativeEvent.text);
             }}
             />
-            <FlatList
-            data={films}
-            keyExtractor={(item) => item._id}
-            renderItem={({item}) => (
-                <Text style={Styles.item}>{item.properties.title}</Text>
-            )} />
+            <ScrollView style={Styles.scroll}>
+                {films.map((v, i) => (
+                    <View key={i}>
+                        <Swipeable key={films[i].uid} onSwipe={onSwipe(films[i].properties.title)} name={films[i].properties.title} />
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }

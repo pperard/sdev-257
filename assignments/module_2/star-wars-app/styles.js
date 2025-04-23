@@ -37,12 +37,20 @@ export default StyleSheet.create({
         alignItems: "center",
       },
     
-      notificationInner: {
+    notificationInner: {
         backgroundColor: "azure",
         padding: 20,
         borderWidth: 1,
         borderColor: "lightsteelblue",
         borderRadius: 2,
         alignItems: "center",
-      },
+    },
+    scroll: {
+        height: 1,
+        alignSelf: "center",
+    },
+    swipeBlank: {
+        height: 30,
+    },
+    
 });

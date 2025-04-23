@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {View, Text, FlatList} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
+import Swipeable from "./Swipeable";
 
 Input.propTypes = {
     label: PropTypes.string,
@@ -15,7 +16,7 @@ export default function Spaceships(){
         const [message, setMessage] = useState(null)// for knowing what message to display in the modal
 
     
-        // fetch the planet from the API when the app load
+        // fetch the spaceship from the API when the app load
         useEffect(() => {
             const fetchSpaceships = async () => {
                 try{
@@ -43,6 +44,14 @@ export default function Spaceships(){
                 </View>
             )
         }
+
+    // implementing the swipeable feature
+    function onSwipe(spaceshipName) {
+        return () => {
+            setMessage(spaceshipName)
+        }
+    }
+
     
     return (
         <View style={Styles.container}>
@@ -53,12 +62,13 @@ export default function Spaceships(){
                 setMessage(e.nativeEvent.text);
             }}
             />
-            <FlatList
-            data={spaceships}
-            keyExtractor={(item) => item.uid}
-            renderItem={({item}) => (
-                <Text style={Styles.item}>{item.name}</Text>
-            )} />
+            <ScrollView>
+                {spaceships.map((v, i) => (
+                    <View key={i}>
+                        <Swipeable key={spaceships[i].uid} onSwipe={onSwipe(spaceships[i].name)} name={spaceships[i].name} />
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }

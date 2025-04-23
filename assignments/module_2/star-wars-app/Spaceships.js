@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {View, Text, FlatList} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
@@ -53,12 +53,13 @@ export default function Spaceships(){
                 setMessage(e.nativeEvent.text);
             }}
             />
-            <FlatList
-            data={spaceships}
-            keyExtractor={(item) => item.uid}
-            renderItem={({item}) => (
-                <Text style={Styles.item}>{item.name}</Text>
-            )} />
+            <ScrollView>
+                {spaceships.map((v, i) => (
+                    <View key={i}>
+                        <Text style={Styles.item}>{spaceships[i].name}</Text>
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }

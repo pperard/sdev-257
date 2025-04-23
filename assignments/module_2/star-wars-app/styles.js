@@ -45,4 +45,8 @@ export default StyleSheet.create({
         borderRadius: 2,
         alignItems: "center",
       },
+      scroll: {
+            height: 1,
+            alignSelf: "center",
+          },
 });

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {View, Text, FlatList} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
@@ -53,12 +53,13 @@ export default function Planets(){
                 setMessage(e.nativeEvent.text);
             }}
             />
-            <FlatList
-            data={planets}
-            keyExtractor={(item) => item.uid}
-            renderItem={({item}) => (
-                <Text style={Styles.item}>{item.name}</Text>
-            )} />
+            <ScrollView style={Styles.scroll}>
+                {planets.map((v, i) => (
+                    <View key={i}>
+                        <Text style={Styles.item}>{planets[i].name}</Text>
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }

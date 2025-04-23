@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {View, Text, FlatList} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
@@ -53,12 +53,13 @@ export default function Films(){
                 setMessage(e.nativeEvent.text);
             }}
             />
-            <FlatList
-            data={films}
-            keyExtractor={(item) => item._id}
-            renderItem={({item}) => (
-                <Text style={Styles.item}>{item.properties.title}</Text>
-            )} />
+            <ScrollView style={Styles.scroll}>
+                {films.map((v, i) => (
+                    <View key={i}>
+                        <Text style={Styles.item}>{films[i].properties.title}</Text>
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }

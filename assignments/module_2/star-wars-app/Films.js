@@ -4,6 +4,7 @@ import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
+import Swipeable from "./Swipeable";
 
 Input.propTypes = {
     label: PropTypes.string,
@@ -15,7 +16,7 @@ export default function Films(){
     const [message, setMessage] = useState(null)// for knowing what message to display in the modal
 
 
-    // fetch the planet from the API when the app load
+    // fetch the film from the API when the app load
     useEffect(() => {
         const fetchFilms = async () => {
             try{
@@ -44,6 +45,14 @@ export default function Films(){
         )
     }
 
+    // implementing the swipeable feature
+    function onSwipe(id) {
+        return () => {
+            setFilms(films.filter((film) => film.uid !== id))
+        }
+    }
+
+
     return (
         <View style={Styles.container}>
             <Notif message={message} />
@@ -56,7 +65,7 @@ export default function Films(){
             <ScrollView style={Styles.scroll}>
                 {films.map((v, i) => (
                     <View key={i}>
-                        <Text style={Styles.item}>{films[i].properties.title}</Text>
+                        <Swipeable key={films[i].uid} onSwipe={onSwipe(films[i].uid)} name={films[i].properties.title} />
                     </View>
                 ))}
             </ScrollView>

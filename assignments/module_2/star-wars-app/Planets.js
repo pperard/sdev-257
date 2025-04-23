@@ -4,6 +4,7 @@ import {View, Text, ScrollView} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
+import Swipeable from "./Swipeable";
 
 Input.propTypes = {
     label: PropTypes.string,
@@ -44,6 +45,13 @@ export default function Planets(){
         )
     }
 
+    // implementing the swipeable feature
+    function onSwipe(id) {
+        return () => {
+            setPlanets(planets.filter((planet) => planet.uid !== id))
+        }
+    }
+
     return (
         <View style={Styles.container}>
             <Notif message={message} />
@@ -53,11 +61,10 @@ export default function Planets(){
                 setMessage(e.nativeEvent.text);
             }}
             />
+            
             <ScrollView style={Styles.scroll}>
                 {planets.map((v, i) => (
-                    <View key={i}>
-                        <Text style={Styles.item}>{planets[i].name}</Text>
-                    </View>
+                    <Swipeable key={planets[i].uid} onSwipe={onSwipe(planets[i].uid)} name={planets[i].name} />
                 ))}
             </ScrollView>
         </View>

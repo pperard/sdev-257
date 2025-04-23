@@ -46,9 +46,9 @@ export default function Spaceships(){
         }
 
     // implementing the swipeable feature
-    function onSwipe(id) {
+    function onSwipe(spaceshipName) {
         return () => {
-            setSpaceships(spaceships.filter((spaceship) => spaceship.uid !== id))
+            setMessage(spaceshipName)
         }
     }
 
@@ -65,7 +65,7 @@ export default function Spaceships(){
             <ScrollView>
                 {spaceships.map((v, i) => (
                     <View key={i}>
-                        <Swipeable key={spaceships[i].uid} onSwipe={onSwipe(spaceships[i].uid)} name={spaceships[i].name} />
+                        <Swipeable key={spaceships[i].uid} onSwipe={onSwipe(spaceships[i].name)} name={spaceships[i].name} />
                     </View>
                 ))}
             </ScrollView>

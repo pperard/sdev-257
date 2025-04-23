@@ -46,9 +46,9 @@ export default function Planets(){
     }
 
     // implementing the swipeable feature
-    function onSwipe(id) {
+    function onSwipe(planetName) {
         return () => {
-            setPlanets(planets.filter((planet) => planet.uid !== id))
+            setMessage(planetName)
         }
     }
 
@@ -64,7 +64,7 @@ export default function Planets(){
             
             <ScrollView style={Styles.scroll}>
                 {planets.map((v, i) => (
-                    <Swipeable key={planets[i].uid} onSwipe={onSwipe(planets[i].uid)} name={planets[i].name} />
+                    <Swipeable key={planets[i].uid} onSwipe={onSwipe(planets[i].name)} name={planets[i].name} />
                 ))}
             </ScrollView>
         </View>

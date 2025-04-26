@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {View, Text, ScrollView, Button} from "react-native";
+import {View, Text, ScrollView, Image} from "react-native";
 import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
@@ -10,7 +10,26 @@ Input.propTypes = {
     label: PropTypes.string,
 };
 
-export default function Planets(){
+// Props for image, logo
+const sourceProp = PropTypes.oneOfType([
+  PropTypes.shape({
+    uri: PropTypes.string.isRequired,
+  }),
+  PropTypes.number,
+]).isRequired;
+
+Planets.propTypes = {
+  reactSource: sourceProp,
+};
+
+Planets.defaultProps = {
+  reactSource: {
+    uri: "https://www.vhv.rs/dpng/d/447-4475287_jedi-order-symbol-png-jedi-order-symbols-transparent.png",
+  },
+};
+
+// App starts here
+export default function Planets({reactSource}){
     const [planets, setPlanets] = useState([]) // for receiving the planets
     const [error, setError] = useState(null) // for error handling
     const [message, setMessage] = useState(null)// for knowing what message to display in the modal
@@ -56,6 +75,7 @@ export default function Planets(){
 
     return (
         <View style={Styles.container}>
+            <Image style={Styles.image} source={reactSource} />
             <Notif message={message} />
             <Input 
             label="Search"

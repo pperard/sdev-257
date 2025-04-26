@@ -46,9 +46,10 @@ export default function Films(){
     }
 
     // implementing the swipeable feature
-    function onSwipe(filmName) {
+    function onSwipe(filmName, id) {
         return () => {
             setMessage(filmName)
+            setFilms(films.filter((film) => film.uid !== id))
         }
     }
 
@@ -65,7 +66,7 @@ export default function Films(){
             <ScrollView style={Styles.scroll}>
                 {films.map((v, i) => (
                     <View key={i}>
-                        <Swipeable key={films[i].uid} onSwipe={onSwipe(films[i].properties.title)} name={films[i].properties.title} />
+                        <Swipeable key={films[i].uid} onSwipe={onSwipe(films[i].properties.title, films[i].uid)} name={films[i].properties.title} />
                     </View>
                 ))}
             </ScrollView>

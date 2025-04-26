@@ -46,6 +46,7 @@ export default StyleSheet.create({
         alignItems: "center",
     },
     scroll: {
+        flex: 1,
         height: 1,
         alignSelf: "center",
     },

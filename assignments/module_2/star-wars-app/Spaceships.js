@@ -5,6 +5,7 @@ import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
 import Swipeable from "./Swipeable";
+import NetInfo from "@react-native-community/netinfo"
 
 Input.propTypes = {
     label: PropTypes.string,
@@ -26,13 +27,22 @@ Spaceships.defaultProps = {
   reactSource: {
     uri: "https://www.vhv.rs/dpng/d/447-4475287_jedi-order-symbol-png-jedi-order-symbols-transparent.png",
   },
-};
+}; // end of prop for image, logo
+
+const connectedMap = { //connectedMap covers all connection states and will help us to render it on the screen.
+    none: "Disconnected",
+    unknown: "Disconnected",
+    wifi: "Connected",
+    cell: "Connected",
+    mobile: "Connected",
+}
 
 
 export default function Spaceships({reactSource}){
         const [spaceships, setSpaceships] = useState([]) // for receiving the spaceships fetched from the API
         const [error, setError] = useState(null) // for handling errors
         const [message, setMessage] = useState(null)// for knowing what message to display in the modal
+        const [connected, setConnected] = useState("");
 
     
         // fetch the spaceship from the API when the app load
@@ -52,7 +62,23 @@ export default function Spaceships({reactSource}){
                     setError(err)
                 }
             }
-            fetchSpaceships()
+        // fetchSpaceships()
+
+        function onNetworkChange(connection){
+            setConnected(connectedMap[connection.type]);
+            if (connection.isConnected === true) {
+                fetchSpaceships() // fetch the API only if the device is connected.
+                console.log(connection)
+            }
+            else {
+                console.log("unfortunately your device is " + connected)
+            }
+        }
+        const unsubscribe = NetInfo.addEventListener(onNetworkChange);
+        return () => {
+            unsubscribe()
+            
+        }
     
         }, [])
     
@@ -89,6 +115,10 @@ export default function Spaceships({reactSource}){
                         <Swipeable key={spaceships[i].uid} onSwipe={onSwipe(spaceships[i].name, spaceships[i].uid)} name={spaceships[i].name} />
                     </View>
                 ))}
+
+                <View>
+                    <Text>Your device is {connected}</Text>
+                </View>
             </ScrollView>
         </View>
     )

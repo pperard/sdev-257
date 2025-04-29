@@ -5,6 +5,7 @@ import Styles from "./styles";
 import Input from "./input";
 import Notif from "./Notif";
 import Swipeable from "./Swipeable";
+import NetInfo from "@react-native-community/netinfo"
 
 Input.propTypes = {
     label: PropTypes.string,
@@ -26,14 +27,22 @@ Planets.defaultProps = {
   reactSource: {
     uri: "https://www.vhv.rs/dpng/d/447-4475287_jedi-order-symbol-png-jedi-order-symbols-transparent.png",
   },
-};
+}; // end of prop for image, logo
+
+const connectedMap = { //connectedMap covers all connection states and will help us to render it on the screen.
+    none: "Disconnected",
+    unknown: "Disconnected",
+    wifi: "Connected",
+    cell: "Connected",
+    mobile: "Connected",
+}
 
 // App starts here
 export default function Planets({reactSource}){
     const [planets, setPlanets] = useState([]) // for receiving the planets
     const [error, setError] = useState(null) // for error handling
     const [message, setMessage] = useState(null)// for knowing what message to display in the modal
-    // const [newList, setnewList] = useState([])
+    const [connected, setConnected] = useState("");
 
 
     // fetch the planet from the API when the app load
@@ -53,7 +62,23 @@ export default function Planets({reactSource}){
                 setError(err)
             }
         }
-        fetchPlanets()
+        // fetchPlanets()
+
+        function onNetworkChange(connection){
+            setConnected(connectedMap[connection.type]);
+            if (connection.isConnected === true) {
+                fetchPlanets() // fetch the API only if the device is connected.
+                console.log(connection)
+            }
+            else {
+                console.log("unfortunately your device is " + connected)
+            }
+        }
+        const unsubscribe = NetInfo.addEventListener(onNetworkChange);
+        return () => {
+            unsubscribe()
+            
+        }
 
     }, [])
 
@@ -90,7 +115,12 @@ export default function Planets({reactSource}){
                         <Swipeable key={planets[i].uid} onSwipe={onSwipe(planets[i].name, planets[i].uid)} name={planets[i].name} />
                     </View>
                 ))}
+
+                <View>
+                    <Text>Your device is {connected}</Text>
+                </View>
             </ScrollView>
+
         </View>
     )
 }

@@ -40,6 +40,7 @@ const connectedMap = { //connectedMap covers all connection states and will help
 
 export default function Spaceships({reactSource}){
         const [spaceships, setSpaceships] = useState([]) // for receiving the spaceships fetched from the API
+        const [originalSpaceships, setOriginalSpaceships] = useState([]); // Store the original list of spaceships
         const [error, setError] = useState(null) // for handling errors
         const [message, setMessage] = useState(null)// for knowing what message to display in the modal
         const [connected, setConnected] = useState("");
@@ -57,6 +58,7 @@ export default function Spaceships({reactSource}){
     
                     const data = await response.json()
                     setSpaceships(data.results)
+                    setOriginalSpaceships(data.results); // Save the original list
                 }
                 catch(err){
                     setError(err)
@@ -68,7 +70,7 @@ export default function Spaceships({reactSource}){
             setConnected(connectedMap[connection.type]);
             if (connection.isConnected === true) {
                 fetchSpaceships() // fetch the API only if the device is connected.
-                console.log(connection)
+                // console.log(connection)
             }
             else {
                 console.log("unfortunately your device is " + connected)
@@ -105,8 +107,11 @@ export default function Spaceships({reactSource}){
             <Notif message={message} />
             <Input 
             label="Search"
-            onSubmitEditing={(e) => {
-                setMessage(e.nativeEvent.text);
+            onChangeText={(text) => {
+                const filteredSpaceships = originalSpaceships.filter((spaceship) =>
+                    spaceship.name.toLowerCase().includes(text.toLowerCase()) // Case-insensitive partial match
+                );
+                setSpaceships(filteredSpaceships);
             }}
             />
             <ScrollView>

@@ -40,6 +40,7 @@ const connectedMap = { //connectedMap covers all connection states and will help
 
 export default function Films({reactSource}){
     const [films, setFilms] = useState([]) // for receiving the films fetched from the API
+    const [originalFilms, setOriginalFilms] = useState([]); // Store the original list of films    
     const [error, setError] = useState(null) // for handling errors
     const [message, setMessage] = useState(null)// for knowing what message to display in the modal
     const [connected, setConnected] = useState("");
@@ -57,6 +58,7 @@ export default function Films({reactSource}){
 
                 const data = await response.json()
                 setFilms(data.result)
+                setOriginalFilms(data.result); // Save the original list
             }
             catch(err){
                 setError(err)
@@ -68,7 +70,7 @@ export default function Films({reactSource}){
             setConnected(connectedMap[connection.type]);
             if (connection.isConnected === true) {
                 fetchFilms() // fetch the API only if the device is connected.
-                console.log(connection)
+                // console.log(connection)
             }
             else {
                 console.log("unfortunately your device is " + connected)
@@ -105,8 +107,11 @@ export default function Films({reactSource}){
             <Notif message={message} />
             <Input 
             label="Search"
-            onSubmitEditing={(e) => {
-                setMessage(e.nativeEvent.text);
+            onChangeText={(text) => {
+                const filteredFilms = originalFilms.filter((film) =>
+                    film.properties.title.toLowerCase().includes(text.toLowerCase()) // Case-insensitive partial match
+                );
+                setFilms(filteredFilms);
             }}
             />
             <ScrollView style={Styles.scroll}>

@@ -40,6 +40,7 @@ const connectedMap = { //connectedMap covers all connection states and will help
 // App starts here
 export default function Planets({reactSource}){
     const [planets, setPlanets] = useState([]) // for receiving the planets
+    const [originalPlanets, setOriginalPlanets] = useState([]); // Store the original list of planets
     const [error, setError] = useState(null) // for error handling
     const [message, setMessage] = useState(null)// for knowing what message to display in the modal
     const [connected, setConnected] = useState("");
@@ -57,18 +58,19 @@ export default function Planets({reactSource}){
 
                 const data = await response.json()
                 setPlanets(data.results)
+                setOriginalPlanets(data.results); // Save the original list
             }
             catch(err){
                 setError(err)
             }
         }
-        // fetchPlanets()
+// fetchPlanets()
 
         function onNetworkChange(connection){
             setConnected(connectedMap[connection.type]);
             if (connection.isConnected === true) {
                 fetchPlanets() // fetch the API only if the device is connected.
-                console.log(connection)
+                // console.log(connection)
             }
             else {
                 console.log("unfortunately your device is " + connected)
@@ -104,8 +106,11 @@ export default function Planets({reactSource}){
             <Notif message={message} />
             <Input 
             label="Search"
-            onSubmitEditing={(e) => {
-                setMessage(e.nativeEvent.text);
+            onChangeText={(text) => {
+                const filteredPlanets = originalPlanets.filter((planet) =>
+                    planet.name.toLowerCase().includes(text.toLowerCase()) // Case-insensitive partial match
+                );
+                setPlanets(filteredPlanets);
             }}
             />
             

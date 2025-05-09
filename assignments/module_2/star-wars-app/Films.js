@@ -38,7 +38,7 @@ const connectedMap = { //connectedMap covers all connection states and will help
 }
 
 
-export default function Films({reactSource}){
+export default function Films({reactSource , navigation}){
     const [films, setFilms] = useState([]) // for receiving the films fetched from the API
     const [originalFilms, setOriginalFilms] = useState([]); // Store the original list of films    
     const [error, setError] = useState(null) // for handling errors
@@ -93,10 +93,11 @@ export default function Films({reactSource}){
     }
 
     // implementing the swipeable feature
-    function onSwipe(filmName, id) {
+    function onSwipe(navigation, film) {
         return () => {
-            setMessage(filmName)
-            setFilms(films.filter((film) => film.uid !== id))
+            // setMessage(filmName)
+            // setFilms(films.filter((film) => film.uid !== id))
+            navigation.navigate("Details", {film}) // also passing the film data to the details screen
         }
     }
 
@@ -115,9 +116,9 @@ export default function Films({reactSource}){
             }}
             />
             <ScrollView style={Styles.scroll}>
-                {films.map((v, i) => (
+                {films.map((film, i) => (
                     <View key={i}>
-                        <Swipeable key={films[i].uid} onSwipe={onSwipe(films[i].properties.title, films[i].uid)} name={films[i].properties.title} />
+                        <Swipeable key={film.uid} onSwipe={onSwipe(navigation, film)} name={film.properties.title} />
                     </View>
                 ))}
                 <View>

@@ -58,5 +58,20 @@ export default StyleSheet.create({
         height: 40,
         margin: 5,
     },
+        title: {
+            fontSize: 34,
+            fontWeight: "bold",
+            marginBottom: 8,
+        },
+        text: {
+            fontSize: 20
+        },
+        description: {
+            alignSelf: "stretch",
+            fontFamily: "Courier New",
+            fontSize:18,
+            fontWeight: 500
+        },
+    
     
 });

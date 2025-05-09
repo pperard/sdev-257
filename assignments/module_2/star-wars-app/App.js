@@ -5,6 +5,7 @@ import { Platform } from "react-native"
 import Planet from "./Planets"
 import Spaceships from "./Spaceships"
 import Films from "./Films"
+import Details from "./Details"
 
 const Tab = createBottomTabNavigator()
 const Drawer = createDrawerNavigator()
@@ -17,6 +18,7 @@ export default function App() {
               <Tab.Screen name="Planets" component={Planet} />
               <Tab.Screen name="Spaceships" component={Spaceships} />
               <Tab.Screen name="Films" component={Films} />
+              <Tab.Screen name="Details" component={Details} />
             </Tab.Navigator>
           )}
 
@@ -25,6 +27,7 @@ export default function App() {
               <Drawer.Screen name="Planets" component={Planet} />
               <Drawer.Screen name="Spaceships" component={Spaceships} />
               <Drawer.Screen name="Films" component={Films} />
+              <Drawer.Screen name="Details" component={Details} />
             </Drawer.Navigator>
           )}
         </NavigationContainer>
